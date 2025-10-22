@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOIDLIGHT - Keeper's Screen / Pantalla del Keeper</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 3px solid #00d4ff;
+            margin-bottom: 30px;
+            background: rgba(0, 212, 255, 0.05);
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .lang-btn {
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .lang-btn:hover {
+            background: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .lang-btn.active {
+            background: #00d4ff;
+            color: #0a0e27;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: #a0a0a0;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .panel {
+            background: rgba(26, 31, 58, 0.8);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+        }
+        
+        .panel h2 {
+            color: #00d4ff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel h3 {
+            color: #4dd0e1;
+            font-size: 1.2em;
+            margin: 15px 0 10px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 0.9em;
+        }
+        
+        th {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 10px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+        
+        td {
+            padding: 8px 10px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        tr:hover td {
+            background: rgba(0, 212, 255, 0.1);
+        }
+        
+        .highlight {
+            background: rgba(255, 215, 0, 0.2);
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .success {
+            color: #4caf50;
+        }
+        
+        .failure {
+            color: #f44336;
+        }
+        
+        .critical {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        li {
+            padding: 5px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        li:before {
+            content: "▸";
+            position: absolute;
+            left: 5px;
+            color: #00d4ff;
+        }
+        
+        .quote {
+            font-style: italic;
+            color: #a0a0a0;
+            padding: 15px;
+            border-left: 3px solid #00d4ff;
+            margin: 15px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .emergency {
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .tip {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid #4caf50;
+            padding: 10px 15px;
+            margin: 10px 0;
+        }
+        
+        .icon {
+            font-size: 1.3em;
+        }
+        
+        .checklist {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .checklist li {
+            padding: 8px 0;
+        }
+        
+        .checklist li:before {
+            content: "☐";
+            font-size: 1.2em;
+        }
+        
+        [data-lang="es"] .en-only,
+        [data-lang="en"] .es-only {
+            display: none;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            .panel {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .language-selector {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body data-lang="en">
+    <div class="container">
+        <header>
+            <div class="language-selector">
+                <button class="lang-btn active" onclick="setLanguage('en')" id="btn-en">English</button>
+                <button class="lang-btn" onclick="setLanguage('es')" id="btn-es">Español</button>
+            </div>
+            <h1>🌌 VOIDLIGHT: <span class="en-only">KEEPER'S SCREEN</span><span class="es-only">PANTALLA DEL KEEPER</span></h1>
+            <p class="subtitle en-only">Quick Reference for the Game Master</p>
+            <p class="subtitle es-only">Referencia Rápida para el Game Master</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Chronicles of the Stellar Veil</p>
+        </header>
+
+        <div class="grid">
+            <!-- DUALITY DICE -->
+            <div class="panel">
+                <h2><span class="icon">🎲</span> <span class="en-only">DUALITY DICE SYSTEM</span><span class="es-only">SISTEMA DE DUALITY DICE</span></h2>
+                <table>
+                    <tr>
+                        <th class="en-only">Result</th>
+                        <th class="es-only">Resultado</th>
+                        <th class="en-only">Condition</th>
+                        <th class="es-only">Condición</th>
+                        <th class="en-only">Consequence</th>
+                        <th class="es-only">Consecuencia</th>
+                    </tr>
+                    <tr class="success">
+                        <td><strong>Success with Hope</strong></td>
+                        <td class="en-only">Meets DC, Hope > Fear</td>
+                        <td class="es-only">Cumple DC, Hope > Fear</td>
+                        <td class="en-only">✅ Goal achieved + benefit<br><strong>Player gains 1 Hope</strong></td>
+                        <td class="es-only">✅ Objetivo logrado + beneficio<br><strong>Jugador gana 1 Hope</strong></td>
+                    </tr>
+                    <tr class="success">
+                        <td><strong>Success with Fear</strong></td>
+                        <td class="en-only">Meets DC, Fear > Hope</td>
+                        <td class="es-only">Cumple DC, Fear > Hope</td>
+                        <td class="en-only">✅ Goal achieved + complication<br><strong>Keeper gains 1 Fear</strong></td>
+                        <td class="es-only">✅ Objetivo logrado + complicación<br><strong>Keeper gana 1 Fear</strong></td>
+                    </tr>
+                    <tr class="failure">
+                        <td><strong>Failure with Hope</strong></td>
+                        <td class="en-only">Misses DC, Hope > Fear</td>
+                        <td class="es-only">Falla DC, Hope > Fear</td>
+                        <td class="en-only">❌ Goal failed + silver lining<br><strong>Player gains 1 Hope</strong></td>
+                        <td class="es-only">❌ Objetivo fallado + lado positivo<br><strong>Jugador gana 1 Hope</strong></td>
+                    </tr>
+                    <tr class="failure">
+                        <td><strong>Failure with Fear</strong></td>
+                        <td class="en-only">Misses DC, Fear > Hope</td>
+                        <td class="es-only">Falla DC, Fear > Hope</td>
+                        <td class="en-only">❌ Goal failed + new problem<br><strong>Keeper gains 1 Fear</strong></td>
+                        <td class="es-only">❌ Objetivo fallado + problema<br><strong>Keeper gana 1 Fear</strong></td>
+                    </tr>
+                    <tr class="critical">
+                        <td><strong>Critical Success</strong></td>
+                        <td class="en-only">Both dice match</td>
+                        <td class="es-only">Ambos dados coinciden</td>
+                        <td class="en-only">⭐ Auto-success + Hope + clear Stress + bonus</td>
+                        <td class="es-only">⭐ Auto-éxito + Hope + limpia Stress + bonus</td>
+                    </tr>
+                </table>
+                
+                <h3>Advantage & Disadvantage</h3>
+                <ul class="en-only">
+                    <li><strong>Advantage</strong>: Roll extra 1d6 and ADD</li>
+                    <li><strong>Disadvantage</strong>: Roll extra 1d6 and SUBTRACT</li>
+                    <li><strong>Cancellation</strong>: Cancel each other 1:1</li>
+                </ul>
+                <ul class="es-only">
+                    <li><strong>Advantage</strong>: Tira 1d6 extra y SUMA</li>
+                    <li><strong>Disadvantage</strong>: Tira 1d6 extra y RESTA</li>
+                    <li><strong>Cancelación</strong>: Se cancelan 1:1</li>
+                </ul>
+            </div>
+
+            <!-- DIFFICULTY CLASSES -->
+            <div class="panel">
+                <h2><span class="icon">🎯</span> DIFFICULTY CLASSES (DC)</h2>
+                <table>
+                    <tr>
+                        <th>DC</th>
+                        <th class="en-only">Difficulty</th>
+                        <th class="es-only">Dificultad</th>
+                        <th class="en-only">Example</th>
+                        <th class="es-only">Ejemplo</th>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Very Easy</td>
+                        <td class="en-only">Public terminal access</td>
+                        <td class="es-only">Acceder a terminal pública</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10</strong></td>
+                        <td>Risky</td>
+                        <td class="en-only">Pick simple lock</td>
+                        <td class="es-only">Abrir cerradura simple</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><strong>15</strong></td>
+                        <td><strong>Challenging</strong></td>
+                        <td class="en-only"><strong>BASELINE - Hack corporate system</strong></td>
+                        <td class="es-only"><strong>BASELINE - Hackear sistema corporativo</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>20</strong></td>
+                        <td>Heroic</td>
+                        <td class="en-only">Pilot through Veil storm</td>
+                        <td class="es-only">Pilotar en tormenta Veil</td>
+                    </tr>
+                    <tr>
+                        <td><strong>25</strong></td>
+                        <td>Mythic</td>
+                        <td class="en-only">Recalibrate Precursor stabilizer</td>
+                        <td class="es-only">Recalibrar estabilizador Precursor</td>
+                    </tr>
+                    <tr>
+                        <td><strong>30</strong></td>
+                        <td>Nearly Impossible</td>
+                        <td class="en-only">Persuade sentient nebula</td>
+                        <td class="es-only">Persuadir nebulosa sentiente</td>
+                    </tr>
+                </table>
+                
+                <h3 class="en-only">Quick Modifiers</h3>
+                <h3 class="es-only">Modificadores Rápidos</h3>
+                <ul class="en-only">
+                    <li>Ideal Conditions: <strong>-2 DC</strong></li>
+                    <li>Adverse Conditions: <strong>+2 DC</strong></li>
+                    <li>Time Pressure: <strong>+2 to +5 DC</strong></li>
+                    <li>Inadequate Equipment: <strong>+2 DC</strong></li>
+                    <li>Ally Help: <strong>Advantage</strong></li>
+                </ul>
+                <ul class="es-only">
+                    <li>Condiciones Ideales: <strong>-2 DC</strong></li>
+                    <li>Condiciones Adversas: <strong>+2 DC</strong></li>
+                    <li>Tiempo Limitado: <strong>+2 a +5 DC</strong></li>
+                    <li>Equipo Inadecuado: <strong>+2 DC</strong></li>
+                    <li>Ayuda de Aliado: <strong>Advantage</strong></li>
+                </ul>
+            </div>
+
+            <!-- DAMAGE SYSTEM -->
+            <div class="panel">
+                <h2><span class="icon">💔</span> <span class="en-only">DAMAGE SYSTEM</span><span class="es-only">SISTEMA DE DAÑO</span></h2>
+                <h3 class="en-only">Personal Damage Resolution</h3>
+                <h3 class="es-only">Resolución de Daño Personal</h3>
+                <ol style="list-style: decimal; padding-left: 20px;" class="en-only">
+                    <li><strong>Damage ≤ Minor</strong> → Mark 1 Stress</li>
+                    <li><strong>Minor < Damage ≤ Severe</strong> → Mark 1 Armor Slot</li>
+                    <li><strong>Damage > Severe</strong> → Mark 1 Hit Point</li>
+                </ol>
+                <ol style="list-style: decimal; padding-left: 20px;" class="es-only">
+                    <li><strong>Daño ≤ Minor</strong> → Marca 1 Stress</li>
+                    <li><strong>Minor < Daño ≤ Severe</strong> → Marca 1 Armor Slot</li>
+                    <li><strong>Daño > Severe</strong> → Marca 1 Hit Point</li>
+                </ol>
+                
+                <h3 class="en-only">Thresholds by Level</h3>
+                <h3 class="es-only">Umbrales por Nivel</h3>
+                <table>
+                    <tr>
+                        <th class="en-only">Level</th>
+                        <th class="es-only">Nivel</th>
+                        <th>Minor</th>
+                        <th>Severe</th>
+                    </tr>
+                    <tr><td>1</td><td>3-5</td><td>8-12</td></tr>
+                    <tr><td>2-3</td><td>5-7</td><td>12-16</td></tr>
+                    <tr><td>4-5</td><td>7-9</td><td>16-20</td></tr>
+                    <tr><td>6-7</td><td>9-11</td><td>20-24</td></tr>
+                    <tr><td>8-10</td><td>11-13</td><td>24-30</td></tr>
+                </table>
+                
+                <div class="tip en-only">
+                    <strong>Critical States:</strong><br>
+                    • Max Stress = Overwhelmed (Disadvantage)<br>
+                    • Last HP = Death Move (final heroic action)<br>
+                    • Empty Armor Slots = No protection
+                </div>
+                <div class="tip es-only">
+                    <strong>Estados Críticos:</strong><br>
+                    • Stress Máximo = Overwhelmed (Disadvantage)<br>
+                    • Último HP = Death Move (acción heroica final)<br>
+                    • Armor Slots vacíos = Sin protección
+                </div>
+            </div>
+
+            <!-- COMBAT -->
+            <div class="panel">
+                <h2><span class="icon">⚔️</span> <span class="en-only">COMBAT</span><span class="es-only">COMBATE</span></h2>
+                <h3 class="en-only">Spotlight System</h3>
+                <h3 class="es-only">Sistema de Spotlight</h3>
+                <div class="tip en-only">
+                    <strong>NO numerical initiative</strong><br>
+                    Spotlight goes to most dramatic moment
+                </div>
+                <div class="tip es-only">
+                    <strong>NO hay iniciativa numérica</strong><br>
+                    El Spotlight va al momento más dramático
+                </div>
+                
+                <h3 class="en-only">Common Actions</h3>
+                <h3 class="es-only">Acciones Comunes</h3>
+                <table>
+                    <tr>
+                        <th class="en-only">Action</th>
+                        <th class="es-only">Acción</th>
+                        <th class="en-only">Effect</th>
+                        <th class="es-only">Efecto</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Attack</strong></td>
+                        <td class="en-only">Roll vs Evasion</td>
+                        <td class="es-only">Tirada vs Evasion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Move</strong></td>
+                        <td class="en-only">Change range</td>
+                        <td class="es-only">Cambiar rango</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use Power</strong></td>
+                        <td class="en-only">Activate Domain</td>
+                        <td class="es-only">Activar Dominio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Help</strong></td>
+                        <td class="en-only">Give Advantage</td>
+                        <td class="es-only">Dar Advantage</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Defend</strong></td>
+                        <td>+2 Evasion</td>
+                    </tr>
+                </table>
+                
+                <h3 class="en-only">Distance Ranges</h3>
+                <h3 class="es-only">Rangos de Distancia</h3>
+                <ul>
+                    <li><strong>Very Close</strong>: 0-5m (melee)</li>
+                    <li><strong>Close</strong>: 5-15m <span class="en-only">(pistols)</span><span class="es-only">(pistolas)</span></li>
+                    <li><strong>Far</strong>: 15-50m <span class="en-only">(rifles)</span><span class="es-only">(rifles)</span></li>
+                    <li><strong>Very Far</strong>: 50-150m (sniper)</li>
+                </ul>
+            </div>
+
+            <!-- WEALTH -->
+            <div class="panel">
+                <h2><span class="icon">💰</span> <span class="en-only">WEALTH SYSTEM</span><span class="es-only">SISTEMA DE RIQUEZA</span></h2>
+                <table>
+                    <tr>
+                        <th>Tier</th>
+                        <th class="en-only">Title</th>
+                        <th class="es-only">Título</th>
+                        <th class="en-only">Monthly</th>
+                        <th class="es-only">Mensual</th>
+                        <th class="en-only">Check For</th>
+                        <th class="es-only">Check Para</th>
+                    </tr>
+                    <tr><td>0</td><td>Forgotten</td><td>—</td><td>—</td></tr>
+                    <tr><td>1</td><td>Established</td><td>1 T1</td><td>T2-3</td></tr>
+                    <tr><td>2</td><td>Prosperous</td><td>1 T2</td><td>T3-4</td></tr>
+                    <tr><td>3</td><td>Affluent</td><td>1 T3</td><td>T4-5</td></tr>
+                    <tr><td>4</td><td>Powerful</td><td>1 T4</td><td>T5</td></tr>
+                    <tr><td>5</td><td>Transcendent</td><td>1 T4</td><td class="en-only">Narrative</td><td class="es-only">Narrativo</td></tr>
+                </table>
+                
+                <div class="tip en-only">
+                    <strong>Wealth Check:</strong> 2d12 (Hope Die + Fear Die) + Presence Modifier + Wealth Tier ≥ Difficulty Class (DC)<br>
+                    DC (difference over your Tier):<br>
+                    - 1 Tier over your own = 16<br>
+                    - 2 Tier over your own = 22<br>
+                    Success = Item acquired, -1 Wealth Tier<br>
+                    Critical = Item WITHOUT reducing Tier
+                </div>
+                <div class="tip es-only">
+                    <strong>Wealth Check:</strong> 2d12 (Hope Die + Fear Die) + Presence Modifier + Wealth Tier ≥ Difficulty Class (DC)<br>
+                    DC (diferencia con el Tier):<br>
+                    - 1 Tier por encima = 16<br>
+                    - 2 Tier por encima = 22<br>
+                    Éxito = Item adquirido, -1 Wealth Tier<br>
+                    Critical = Item SIN reducir Tier
+                </div>
+            </div>
+
+            <!-- REPUTATION -->
+            <div class="panel">
+                <h2><span class="icon">🏛️</span> <span class="en-only">REPUTATION</span><span class="es-only">REPUTACIÓN</span></h2>
+                <table>
+                    <tr>
+                        <th class="en-only">Level</th>
+                        <th class="es-only">Nivel</th>
+                        <th class="en-only">Title</th>
+                        <th class="es-only">Título</th>
+                        <th>RP</th>
+                        <th class="en-only">Feeling</th>
+                        <th class="es-only">Sentimiento</th>
+                    </tr>
+                    <tr class="success">
+                        <td>+6</td>
+                        <td>Legendary</td>
+                        <td>35+</td>
+                        <td class="en-only">Define faction's future</td>
+                        <td class="es-only">Defines el futuro</td>
+                    </tr>
+                    <tr class="success">
+                        <td>+5</td>
+                        <td>Revered</td>
+                        <td>25</td>
+                        <td class="en-only">Family, leader</td>
+                        <td class="es-only">Familia, líder</td>
+                    </tr>
+                    <tr class="success">
+                        <td>+4</td>
+                        <td>Honored</td>
+                        <td>17</td>
+                        <td class="en-only">Valued</td>
+                        <td class="es-only">Valorado</td>
+                    </tr>
+                    <tr class="success">
+                        <td>+3</td>
+                        <td>Trusted</td>
+                        <td>10</td>
+                        <td class="en-only">Reliable ally</td>
+                        <td class="es-only">Aliado confiable</td>
+                    </tr>
+                    <tr>
+                        <td>+2</td>
+                        <td>Respected</td>
+                        <td>5</td>
+                        <td class="en-only">Competent</td>
+                        <td class="es-only">Competente</td>
+                    </tr>
+                    <tr>
+                        <td>+1</td>
+                        <td>Recognized</td>
+                        <td>2</td>
+                        <td class="en-only">Known</td>
+                        <td class="es-only">Conocido</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>Unknown</td>
+                        <td>0</td>
+                        <td class="en-only">Unknown</td>
+                        <td class="es-only">Desconocido</td>
+                    </tr>
+                    <tr class="failure">
+                        <td>-1</td>
+                        <td>Distrusted</td>
+                        <td>-2</td>
+                        <td class="en-only">Suspicious</td>
+                        <td class="es-only">Sospechoso</td>
+                    </tr>
+                    <tr class="failure">
+                        <td>-2</td>
+                        <td>Scorned</td>
+                        <td>-5</td>
+                        <td class="en-only">Enemy</td>
+                        <td class="es-only">Enemigo</td>
+                    </tr>
+                    <tr class="failure">
+                        <td>-3</td>
+                        <td>Hated</td>
+                        <td>-10</td>
+                        <td>Kill-on-sight</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- CLOCKS -->
+            <div class="panel">
+                <h2><span class="icon">⏰</span> <span class="en-only">CLOCKS SYSTEM</span><span class="es-only">SISTEMA DE CLOCKS</span></h2>
+                <table>
+                    <tr>
+                        <th class="en-only">Type</th>
+                        <th class="es-only">Tipo</th>
+                        <th class="en-only">Segments</th>
+                        <th class="es-only">Segmentos</th>
+                        <th class="en-only">Use</th>
+                        <th class="es-only">Uso</th>
+                    </tr>
+                    <tr>
+                        <td class="en-only">Quick</td>
+                        <td class="es-only">Rápido</td>
+                        <td>4</td>
+                        <td class="en-only">Immediate events</td>
+                        <td class="es-only">Eventos inmediatos</td>
+                    </tr>
+                    <tr>
+                        <td class="en-only">Standard</td>
+                        <td class="es-only">Estándar</td>
+                        <td>6</td>
+                        <td class="en-only">Medium projects</td>
+                        <td class="es-only">Proyectos medianos</td>
+                    </tr>
+                    <tr>
+                        <td class="en-only">Long</td>
+                        <td class="es-only">Largo</td>
+                        <td>8</td>
+                        <td class="en-only">Complex projects</td>
+                        <td class="es-only">Proyectos complejos</td>
+                    </tr>
+                    <tr>
+                        <td class="en-only">Epic</td>
+                        <td class="es-only">Épico</td>
+                        <td>10-12</td>
+                        <td class="en-only">Campaign arcs</td>
+                        <td class="es-only">Arcos de campaña</td>
+                    </tr>
+                </table>
+                
+                <h3 class="en-only">Advance Clock</h3>
+                <h3 class="es-only">Avanzar Clock</h3>
+                <ul class="en-only">
+                    <li>Failure with Fear: +1</li>
+                    <li>Time passes: +1</li>
+                    <li>Enemy action: +1-2</li>
+                    <li>Major complication: +2-3</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Fallo con Fear: +1</li>
+                    <li>Tiempo pasa: +1</li>
+                    <li>Acción enemiga: +1-2</li>
+                    <li>Complicación mayor: +2-3</li>
+                </ul>
+                
+                <h3 class="en-only">Reduce Clock</h3>
+                <h3 class="es-only">Reducir Clock</h3>
+                <ul class="en-only">
+                    <li>Success with Hope: -1</li>
+                    <li>Preventive action: -1-2</li>
+                    <li>Heroic intervention: -2-3</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Éxito con Hope: -1</li>
+                    <li>Acción preventiva: -1-2</li>
+                    <li>Intervención heroica: -2-3</li>
+                </ul>
+            </div>
+
+            <!-- DOMAINS -->
+            <div class="panel">
+                <h2><span class="icon">🎭</span> <span class="en-only">DOMAINS</span><span class="es-only">DOMINIOS</span></h2>
+                <table>
+                    <tr>
+                        <th class="en-only">Domain</th>
+                        <th class="es-only">Dominio</th>
+                        <th class="en-only">Focus</th>
+                        <th class="es-only">Enfoque</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Tech</strong></td>
+                        <td class="en-only">Hacking, Invention, Systems</td>
+                        <td class="es-only">Hacking, Invención, Sistemas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Synthesis</strong></td>
+                        <td class="en-only">Biology, Healing, Adaptation</td>
+                        <td class="es-only">Biología, Curación, Adaptación</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Social</strong></td>
+                        <td class="en-only">Influence, Deception, Diplomacy</td>
+                        <td class="es-only">Influencia, Engaño, Diplomacia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Neural</strong></td>
+                        <td class="en-only">Psionics, Telepathy, Mental</td>
+                        <td class="es-only">Psiónica, Telepatía, Mental</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kinetic</strong></td>
+                        <td class="en-only">Force, Protection, Movement</td>
+                        <td class="es-only">Fuerza, Protección, Movimiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Void</strong></td>
+                        <td class="en-only">Space-Time, Luck, Stealth</td>
+                        <td class="es-only">Espacio-Tiempo, Suerte, Stealth</td>
+                    </tr>
+                </table>
+                
+                <h3 class="en-only">Recall Cost by Level</h3>
+                <h3 class="es-only">Recall Cost por Nivel</h3>
+                <ul class="en-only">
+                    <li>Level 1-2: 0-1 Hope/Stress</li>
+                    <li>Level 3-4: 1-2 Hope/Stress</li>
+                    <li>Level 5-6: 2-3 Hope/Stress</li>
+                    <li>Level 7-8: 3 Hope/Stress</li>
+                    <li>Level 9-10: 3 + Special restrictions</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Nivel 1-2: 0-1 Hope/Stress</li>
+                    <li>Nivel 3-4: 1-2 Hope/Stress</li>
+                    <li>Nivel 5-6: 2-3 Hope/Stress</li>
+                    <li>Nivel 7-8: 3 Hope/Stress</li>
+                    <li>Nivel 9-10: 3 + Restricciones</li>
+                </ul>
+            </div>
+
+            <!-- HOPE & FEAR -->
+            <div class="panel">
+                <h2><span class="icon">🎪</span> HOPE & FEAR</h2>
+                <h3 class="en-only">Players Spend Hope To:</h3>
+                <h3 class="es-only">Jugadores Gastan Hope Para:</h3>
+                <ul class="en-only">
+                    <li>Invoke Experience (add your Experience modifier to the roll)</li>
+                    <li>Activate Domain powers</li>
+                    <li>Help ally (Advantage)</li>
+                    <li>Resist negative effect</li>
+                    <li>Declare minor narrative detail</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Invocar Experience (Añade el valor de tu experiencia a la tirada)</li>
+                    <li>Activar poderes de Dominio</li>
+                    <li>Ayudar aliado (Advantage)</li>
+                    <li>Resistir efecto negativo</li>
+                    <li>Declarar detalle narrativo</li>
+                </ul>
+                
+                <h3 class="en-only">Keeper Spends Fear To:</h3>
+                <h3 class="es-only">Keeper Gasta Fear Para:</h3>
+                <ul class="en-only">
+                    <li>Make Keeper Move</li>
+                    <li>Activate enemy ability</li>
+                    <li>Introduce threat</li>
+                    <li>Advance Clock</li>
+                    <li>Hostile environment</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Hacer Keeper Move</li>
+                    <li>Activar habilidad enemiga</li>
+                    <li>Introducir amenaza</li>
+                    <li>Avanzar Clock</li>
+                    <li>Ambiente hostil</li>
+                </ul>
+                
+                <div class="tip en-only">
+                    <strong>Limits:</strong><br>
+                    Hope Pool: Max 6 per player<br>
+                    Fear Pool: No limit
+                </div>
+                <div class="tip es-only">
+                    <strong>Límites:</strong><br>
+                    Hope Pool: Máximo 6 por jugador<br>
+                    Fear Pool: Sin límite
+                </div>
+            </div>
+
+            <!-- STARSHIP COMBAT -->
+            <div class="panel">
+                <h2><span class="icon">🚀</span> <span class="en-only">STARSHIP COMBAT</span><span class="es-only">COMBATE ESPACIAL</span></h2>
+                <h3 class="en-only">Damage Resolution</h3>
+                <h3 class="es-only">Resolución de Daño</h3>
+                <ol style="list-style: decimal; padding-left: 20px;" class="en-only">
+                    <li>Damage ≤ Soak → Fizzle (no effect)</li>
+                    <li>Damage > Soak → Excess to Armor</li>
+                    <li>Excess ≤ DT → Glancing (no effect)</li>
+                    <li>Excess > DT → Hull Stress (Excess - DT)</li>
+                    <li>Last Hull Stress → Catastrophe Table</li>
+                </ol>
+                <ol style="list-style: decimal; padding-left: 20px;" class="es-only">
+                    <li>Daño ≤ Soak → Fizzle (sin efecto)</li>
+                    <li>Daño > Soak → Exceso a Armor</li>
+                    <li>Exceso ≤ DT → Glancing (sin efecto)</li>
+                    <li>Exceso > DT → Hull Stress (Exceso - DT)</li>
+                    <li>Última Hull Stress → Catastrophe Table</li>
+                </ol>
+                
+                <h3 class="en-only">Stats by Tier</h3>
+                <h3 class="es-only">Stats por Tier</h3>
+                <table>
+                    <tr>
+                        <th>Tier</th>
+                        <th>Hull</th>
+                        <th>Soak</th>
+                        <th>DT</th>
+                        <th>Evasion</th>
+                    </tr>
+                    <tr><td>1-2</td><td>8-12</td><td>2-4</td><td>3-5</td><td>10-12</td></tr>
+                    <tr><td>3-4</td><td>12-18</td><td>4-6</td><td>5-8</td><td>12-14</td></tr>
+                    <tr><td>5</td><td>18-25</td><td>6-10</td><td>8-12</td><td>14-16</td></tr>
+                </table>
+                
+                <h3>Action Points (AP)</h3>
+                <ul class="en-only">
+                    <li>Small Ship: 3-4 AP</li>
+                    <li>Medium Ship: 4-5 AP</li>
+                    <li>Large Ship: 5-6 AP</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Nave Pequeña: 3-4 AP</li>
+                    <li>Nave Media: 4-5 AP</li>
+                    <li>Nave Grande: 5-6 AP</li>
+                </ul>
+            </div>
+
+            <!-- GREAT HOUSES -->
+            <div class="panel">
+                <h2><span class="icon">🌌</span> <span class="en-only">GREAT HOUSES</span><span class="es-only">GRANDES CASAS</span></h2>
+                <table>
+                    <tr>
+                        <th class="en-only">House</th>
+                        <th class="es-only">Casa</th>
+                        <th class="en-only">Focus</th>
+                        <th class="es-only">Enfoque</th>
+                        <th>Perks</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Joric</strong></td>
+                        <td class="en-only">Military</td>
+                        <td class="es-only">Militar</td>
+                        <td class="en-only">Weapons, training</td>
+                        <td class="es-only">Armas, entrenamiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Valerius</strong></td>
+                        <td class="en-only">Commerce</td>
+                        <td class="es-only">Comercio</td>
+                        <td class="en-only">Discounts, contacts</td>
+                        <td class="es-only">Descuentos, contactos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kurogane</strong></td>
+                        <td class="en-only">Technology</td>
+                        <td class="es-only">Tecnología</td>
+                        <td class="en-only">Experimental tech</td>
+                        <td class="es-only">Tech experimental</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Volkov</strong></td>
+                        <td class="en-only">Diplomacy</td>
+                        <td class="es-only">Diplomacia</td>
+                        <td class="en-only">Info, political contacts</td>
+                        <td class="es-only">Info, contactos políticos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Amaranth</strong></td>
+                        <td class="en-only">Information</td>
+                        <td class="es-only">Información</td>
+                        <td class="en-only">Secret archives, intel</td>
+                        <td class="es-only">Archivos, inteligencia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Solari</strong></td>
+                        <td class="en-only">Exploration</td>
+                        <td class="es-only">Exploración</td>
+                        <td class="en-only">Star maps, exploration gear</td>
+                        <td class="es-only">Mapas, equipo exploración</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- KEEPER MOVES -->
+            <div class="panel">
+                <h2><span class="icon">🎬</span> KEEPER MOVES</h2>
+                <h3 class="en-only">Soft Moves (Warnings)</h3>
+                <h3 class="es-only">Soft Moves (Advertencias)</h3>
+                <ul class="en-only">
+                    <li>Show signs of danger</li>
+                    <li>Introduce minor complication</li>
+                    <li>Ask revealing question</li>
+                    <li>Offer opportunity with cost</li>
+                    <li>Show previous consequence</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Mostrar señales de peligro</li>
+                    <li>Introducir complicación menor</li>
+                    <li>Hacer pregunta reveladora</li>
+                    <li>Ofrecer oportunidad con costo</li>
+                    <li>Mostrar consecuencia previa</li>
+                </ul>
+                
+                <h3 class="en-only">Hard Moves (Consequences)</h3>
+                <h3 class="es-only">Hard Moves (Consecuencias)</h3>
+                <ul class="en-only">
+                    <li>Inflict direct damage</li>
+                    <li>Capture or separate group</li>
+                    <li>Destroy important equipment</li>
+                    <li>Reveal betrayal</li>
+                    <li>Advance Clock significantly</li>
+                    <li>Change situation dramatically</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Infligir daño directo</li>
+                    <li>Capturar o separar grupo</li>
+                    <li>Destruir equipo importante</li>
+                    <li>Revelar traición</li>
+                    <li>Avanzar Clock significativamente</li>
+                    <li>Cambiar situación dramáticamente</li>
+                </ul>
+                
+                <div class="emergency en-only">
+                    <strong>Make Hard Move when:</strong><br>
+                    • Failure with Fear<br>
+                    • Ignore Soft Moves<br>
+                    • Clock fills<br>
+                    • Spend 3+ Fear
+                </div>
+                <div class="emergency es-only">
+                    <strong>Hacer Hard Move cuando:</strong><br>
+                    • Fallo con Fear<br>
+                    • Ignoran Soft Moves<br>
+                    • Clock se llena<br>
+                    • Gastas 3+ Fear
+                </div>
+            </div>
+
+            <!-- HEAT -->
+            <div class="panel">
+                <h2><span class="icon">🔥</span> HEAT</h2>
+                <table>
+                    <tr>
+                        <th>Heat</th>
+                        <th class="en-only">Level</th>
+                        <th class="es-only">Nivel</th>
+                        <th class="en-only">Consequences</th>
+                        <th class="es-only">Consecuencias</th>
+                    </tr>
+                    <tr>
+                        <td>0-2</td>
+                        <td>Low</td>
+                        <td class="en-only">No immediate consequences</td>
+                        <td class="es-only">Sin consecuencias</td>
+                    </tr>
+                    <tr>
+                        <td>3-5</td>
+                        <td>Medium</td>
+                        <td class="en-only">Surveillance, Disadvantage Stealth</td>
+                        <td class="es-only">Vigilancia, Disadvantage Stealth</td>
+                    </tr>
+                    <tr>
+                        <td>6-8</td>
+                        <td>High</td>
+                        <td class="en-only">Bounties, active patrols</td>
+                        <td class="es-only">Bounties, patrullas activas</td>
+                    </tr>
+                    <tr>
+                        <td>9-11</td>
+                        <td>Critical</td>
+                        <td class="en-only">Kill teams, frozen assets</td>
+                        <td class="es-only">Equipos eliminación, assets congelados</td>
+                    </tr>
+                    <tr class="failure">
+                        <td>12+</td>
+                        <td>Extreme</td>
+                        <td class="en-only">Open warfare</td>
+                        <td class="es-only">Guerra abierta</td>
+                    </tr>
+                </table>
+                
+                <h3 class="en-only">Reduce Heat</h3>
+                <h3 class="es-only">Reducir Heat</h3>
+                <ul class="en-only">
+                    <li>Lie Low (Downtime): -1-2</li>
+                    <li>Pay Off (Wealth): -2-3</li>
+                    <li>Frame Someone (DC 18): -3-4</li>
+                    <li>Erase Records (DC 20): -2-4</li>
+                </ul>
+                <ul class="es-only">
+                    <li>Lie Low (Downtime): -1-2</li>
+                    <li>Pay Off (Wealth): -2-3</li>
+                    <li>Frame Someone (DC 18): -3-4</li>
+                    <li>Erase Records (DC 20): -2-4</li>
+                </ul>
+            </div>
+
+            <!-- QUICK NPCs -->
+            <div class="panel">
+                <h2><span class="icon">🧠</span> <span class="en-only">QUICK NPCs</span><span class="es-only">NPCs RÁPIDOS</span></h2>
+                <h3 class="en-only">The Four Hungers</h3>
+                <h3 class="es-only">The Four Hungers</h3>
+                <ul class="en-only">
+                    <li><strong>Power</strong>: Control, influence</li>
+                    <li><strong>Safety</strong>: Security, stability</li>
+                    <li><strong>Truth</strong>: Knowledge, answers</li>
+                    <li><strong>Connection</strong>: Love, belonging</li>
+                </ul>
+                <ul class="es-only">
+                    <li><strong>Power</strong>: Control, influencia</li>
+                    <li><strong>Safety</strong>: Seguridad, estabilidad</li>
+                    <li><strong>Truth</strong>: Conocimiento, respuestas</li>
+                    <li><strong>Connection</strong>: Amor, pertenencia</li>
+                </ul>
+                
+                <h3 class="en-only">Stats by Threat Level</h3>
+                <h3 class="es-only">Stats por Threat Level</h3>
+                <table>
+                    <tr>
+                        <th>Level</th>
+                        <th>HP</th>
+                        <th>Evasion</th>
+                        <th class="en-only">Damage</th>
+                        <th class="es-only">Daño</th>
+                    </tr>
+                    <tr><td>Trivial</td><td>3-5</td><td>8-10</td><td>1d4</td></tr>
+                    <tr><td>Minor</td><td>6-8</td><td>10-12</td><td>1d6</td></tr>
+                    <tr><td>Moderate</td><td>9-12</td><td>12-14</td><td>1d8</td></tr>
+                    <tr><td>Serious</td><td>13-16</td><td>14-16</td><td>1d10</td></tr>
+                    <tr><td>Deadly</td><td>17-20</td><td>16-18</td><td>2d8</td></tr>
+                    <tr class="critical"><td>Legendary</td><td>21+</td><td>18+</td><td>2d10+</td></tr>
+                </table>
+            </div>
+
+            <!-- PROFICIENCY -->
+            <div class="panel">
+                <h2><span class="icon">🔧</span> <span class="en-only">PROFICIENCY</span><span class="es-only">PROFICIENCIA</span></h2>
+                <table>
+                    <tr>
+                        <th>Tier</th>
+                        <th class="en-only">Name</th>
+                        <th class="es-only">Nombre</th>
+                        <th class="en-only">Access</th>
+                        <th class="es-only">Acceso</th>
+                        <th>Malfunction</th>
+                    </tr>
+                    <tr><td>1</td><td>Common</td><td class="en-only">All</td><td class="es-only">Todos</td><td>Natural 1</td></tr>
+                    <tr><td>2</td><td>Military</td><td>Level 2+</td><td>Natural 1-2</td></tr>
+                    <tr><td>3</td><td>Experimental</td><td>Level 5+</td><td>Natural 1-3</td></tr>
+                    <tr><td>4</td><td>Precursor</td><td>Level 8+</td><td>Natural 1-4</td></tr>
+                </table>
+                
+                <div class="emergency en-only">
+                    <strong>Without Proficiency:</strong><br>
+                   <strong> 1 level difference (common->Military)</strong><br>
+                    • Disadvantage on all rolls<br>
+                    <strong> 2 level difference (common->Experimental)</strong><br>
+                    • Malfunction +1 to range<br>
+                    • Can't use special Features
+                </div>
+                <div class="emergency es-only">
+                    <strong>Sin Proficiencia:</strong><br>
+                    <strong> 1 nivel de diferencia (common->Military)</strong><br>
+                    • Disadvantage en todas las tiradas<br>
+                    <strong> 2 niveles de diferencia (common->Experimental)</strong><br>
+                    • Malfunction +1 al rango<br>
+                    • No puedes usar Features
+                </div>
+            </div>
+
+            <!-- DOWNTIME -->
+            <div class="panel">
+                <h2><span class="icon">🏃</span> DOWNTIME</h2>
+                <table>
+                    <tr>
+                        <th class="en-only">Activity</th>
+                        <th class="es-only">Actividad</th>
+                        <th class="en-only">Effect</th>
+                        <th class="es-only">Efecto</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Recover</strong></td>
+                        <td class="en-only">Clear Stress, +1d4 HP</td>
+                        <td class="es-only">Limpia Stress, +1d4 HP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Train</strong></td>
+                        <td class="en-only">Advance training Clock</td>
+                        <td class="es-only">Avanza Clock entrenamiento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Work</strong></td>
+                        <td class="en-only">Earn credits</td>
+                        <td class="es-only">Gana créditos</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Project</strong></td>
+                        <td class="en-only">Advance project Clock</td>
+                        <td class="es-only">Avanza Clock proyecto</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Socialize</strong></td>
+                        <td>±Reputation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Research</strong></td>
+                        <td class="en-only">Investigate mystery</td>
+                        <td class="es-only">Investiga misterio</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- COMPLICATIONS -->
+            <div class="panel">
+                <h2><span class="icon">🎲</span> <span class="en-only">COMPLICATIONS (1d6)</span><span class="es-only">COMPLICACIONES (1d6)</span></h2>
+                <table>
+                    <tr>
+                        <th>d6</th>
+                        <th class="en-only">Complication</th>
+                        <th class="es-only">Complicación</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="en-only">Equipment fails at critical moment</td>
+                        <td class="es-only">Equipo falla en momento crítico</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="en-only">Unexpected witness</td>
+                        <td class="es-only">Testigo inesperado</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="en-only">Less time than expected</td>
+                        <td class="es-only">Menos tiempo del esperado</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="en-only">Enemy reinforcements arrive</td>
+                        <td class="es-only">Refuerzos enemigos llegan</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="en-only">Moral dilemma appears</td>
+                        <td class="es-only">Dilema moral aparece</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="en-only">Ally has hidden agenda</td>
+                        <td class="es-only">Aliado tiene agenda oculta</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- ENCOUNTERS -->
+            <div class="panel">
+                <h2><span class="icon">👥</span> <span class="en-only">ENCOUNTERS (1d8)</span><span class="es-only">ENCUENTROS (1d8)</span></h2>
+                <table>
+                    <tr>
+                        <th>d8</th>
+                        <th class="en-only">Encounter</th>
+                        <th class="es-only">Encuentro</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td class="en-only">Security Patrol (2-4)</td>
+                        <td class="es-only">Patrulla de Seguridad (2-4)</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td class="en-only">Wandering Merchant (T1-2 gear)</td>
+                        <td class="es-only">Mercader (equipo T1-2)</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td class="en-only">Info Broker (sells info)</td>
+                        <td class="es-only">Info Broker (vende info)</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td class="en-only">Refugees (seeking help)</td>
+                        <td class="es-only">Refugiados (buscan ayuda)</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td class="en-only">Corporate Agent (observing)</td>
+                        <td class="es-only">Agente Corporativo (observa)</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td class="en-only">Smugglers (illegal work)</td>
+                        <td class="es-only">Contrabandistas (trabajo ilegal)</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td class="en-only">Wandering Mystic (cryptic visions)</td>
+                        <td class="es-only">Mystic (visiones crípticas)</td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td class="en-only">Environmental Hazard</td>
+                        <td class="es-only">Peligro Ambiental</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- EMERGENCY PROTOCOL -->
+        <div class="panel" style="margin-bottom: 20px;">
+            <h2><span class="icon">🚨</span> <span class="en-only">EMERGENCY PROTOCOL</span><span class="es-only">PROTOCOLO DE EMERGENCIA</span></h2>
+            <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div>
+                    <h3 class="en-only">"Don't Know What To Do"</h3>
+                    <h3 class="es-only">"No Sé Qué Hacer"</h3>
+                    <ol style="list-style: decimal; padding-left: 20px;" class="en-only">
+                        <li>Ask players</li>
+                        <li>Check nearest Clock</li>
+                        <li>Use NPC's Hunger</li>
+                        <li>Roll on random table</li>
+                        <li>Spend Fear (Hard Move)</li>
+                        <li>Change Spotlight</li>
+                    </ol>
+                    <ol style="list-style: decimal; padding-left: 20px;" class="es-only">
+                        <li>Pregunta a jugadores</li>
+                        <li>Consulta Clock más cercano</li>
+                        <li>Usa Hunger de NPC</li>
+                        <li>Tira en tabla aleatoria</li>
+                        <li>Gasta Fear (Hard Move)</li>
+                        <li>Cambia Spotlight</li>
+                    </ol>
+                </div>
+                <div>
+                    <h3 class="en-only">Stalled Combat</h3>
+                    <h3 class="es-only">Combate Estancado</h3>
+                    <ul class="en-only">
+                        <li>Enemy reinforcements</li>
+                        <li>Dangerous environment</li>
+                        <li>Secondary objective</li>
+                        <li>Time limit (Clock 4)</li>
+                        <li>Third faction</li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Refuerzos enemigos</li>
+                        <li>Ambiente peligroso</li>
+                        <li>Objetivo secundario</li>
+                        <li>Tiempo límite (Clock 4)</li>
+                        <li>Tercera facción</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="en-only">Indecisive Players</h3>
+                    <h3 class="es-only">Jugadores Indecisos</h3>
+                    <ul class="en-only">
+                        <li>Visible Clock (urgency)</li>
+                        <li>Enemies act</li>
+                        <li>New info</li>
+                        <li>"What's the worst?"</li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Clock visible (urgencia)</li>
+                        <li>Enemigos actúan</li>
+                        <li>Info nueva</li>
+                        <li>"¿Qué es lo peor?"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- SESSION CHECKLIST -->
+        <div class="panel" style="margin-bottom: 20px;">
+            <h2><span class="icon">📋</span> <span class="en-only">SESSION CHECKLIST</span><span class="es-only">CHECKLIST DE SESIÓN</span></h2>
+            <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="checklist">
+                    <h3 class="en-only">Pre-Session</h3>
+                    <h3 class="es-only">Pre-Sesión</h3>
+                    <ul class="en-only">
+                        <li>Review active Clocks</li>
+                        <li>Prepare 2-3 Soft Moves</li>
+                        <li>Prepare 1-2 Hard Moves</li>
+                        <li>Review Reputation</li>
+                        <li>Prepare 3-4 NPCs</li>
+                        <li>Have complications ready</li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Revisar Clocks activos</li>
+                        <li>Preparar 2-3 Soft Moves</li>
+                        <li>Preparar 1-2 Hard Moves</li>
+                        <li>Revisar Reputation</li>
+                        <li>Preparar 3-4 NPCs</li>
+                        <li>Tener complicaciones listas</li>
+                    </ul>
+                </div>
+                <div class="checklist">
+                    <h3 class="en-only">During Session</h3>
+                    <h3 class="es-only">Durante Sesión</h3>
+                    <ul class="en-only">
+                        <li>Establish initial Spotlight</li>
+                        <li>Track Hope/Fear visibly</li>
+                        <li>Advance Clocks appropriately</li>
+                        <li>Soft before Hard Moves</li>
+                        <li>Ask "What do you do?"</li>
+                        <li>Describe consequences</li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Establecer Spotlight inicial</li>
+                        <li>Trackear Hope/Fear visible</li>
+                        <li>Avanzar Clocks apropiados</li>
+                        <li>Soft antes de Hard Moves</li>
+                        <li>Preguntar "¿Qué haces?"</li>
+                        <li>Describir consecuencias</li>
+                    </ul>
+                </div>
+                <div class="checklist">
+                    <h3 class="en-only">Post-Session</h3>
+                    <h3 class="es-only">Post-Sesión</h3>
+                    <ul class="en-only">
+                        <li>Update Reputation</li>
+                        <li>Advance Faction Clocks</li>
+                        <li>Note accumulated Heat</li>
+                        <li>Prepare consequences</li>
+                        <li>Update equipment/ships</li>
+                        <li>Note future Hooks</li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Actualizar Reputation</li>
+                        <li>Avanzar Faction Clocks</li>
+                        <li>Anotar Heat acumulado</li>
+                        <li>Preparar consecuencias</li>
+                        <li>Actualizar equipo/naves</li>
+                        <li>Anotar Hooks futuros</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- EMERGENCY NUMBERS -->
+        <div class="panel" style="margin-bottom: 20px;">
+            <h2><span class="icon">🆘</span> <span class="en-only">EMERGENCY NUMBERS</span><span class="es-only">NÚMEROS DE EMERGENCIA</span></h2>
+            <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div>
+                    <h3 class="en-only">Most Common DCs</h3>
+                    <h3 class="es-only">DCs Más Comunes</h3>
+                    <ul class="en-only">
+                        <li>Routine: <strong>DC 10</strong></li>
+                        <li class="highlight">Risky: <strong>DC 15</strong> ⭐</li>
+                        <li>Heroic: <strong>DC 20</strong></li>
+                        <li>Mythic: <strong>DC 25</strong></li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Rutinaria: <strong>DC 10</strong></li>
+                        <li class="highlight">Arriesgada: <strong>DC 15</strong> ⭐</li>
+                        <li>Heroica: <strong>DC 20</strong></li>
+                        <li>Mítica: <strong>DC 25</strong></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="en-only">Damage by Weapon</h3>
+                    <h3 class="es-only">Daño por Arma</h3>
+                    <ul class="en-only">
+                        <li>Pistol: 1d6-1d8</li>
+                        <li>Rifle: 1d8-1d10</li>
+                        <li>Heavy: 1d10-2d8</li>
+                        <li>Explosive: 2d6-3d6</li>
+                    </ul>
+                    <ul class="es-only">
+                        <li>Pistola: 1d6-1d8</li>
+                        <li>Rifle: 1d8-1d10</li>
+                        <li>Pesada: 1d10-2d8</li>
+                        <li>Explosivo: 2d6-3d6</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="en-only">HP by Level</h3>
+                    <h3 class="es-only">HP por Nivel</h3>
+                    <ul>
+                        <li>Level 1: 6-7 HP</li>
+                        <li>Level 3: 7-8 HP</li>
+                        <li>Level 5: 8-9 HP</li>
+                        <li>Level 10: 10-12 HP</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUOTES -->
+        <div class="panel">
+            <h2><span class="icon">💬</span> <span class="en-only">INSPIRATIONAL QUOTES</span><span class="es-only">QUOTES INSPIRACIONALES</span></h2>
+            <div class="quote en-only">
+                "In the void between the stars, love and betrayal dance in a dangerous orbit. Sometimes it's impossible to tell which one will destroy you first."
+                <br><strong>— Captain Zara "Starwind" Kaine</strong>
+            </div>
+            <div class="quote es-only">
+                "En el vacío entre las estrellas, el amor y la traición danzan en una órbita peligrosa. A veces es imposible distinguir cuál te destruirá primero."
+                <br><strong>— Captain Zara "Starwind" Kaine</strong>
+            </div>
+            <div class="quote en-only">
+                "The Veil sings a thousand different songs at once. Most are just static. But sometimes... sometimes you hear something different."
+                <br><strong>— Captain Eva Rostova</strong>
+            </div>
+            <div class="quote es-only">
+                "El Velo canta mil canciones diferentes a la vez. La mayoría es solo estática. Pero a veces... a veces escuchas algo diferente."
+                <br><strong>— Captain Eva Rostova</strong>
+            </div>
+            <div class="quote en-only">
+                "The universe is broken. From the pieces, we build anything."
+                <br><strong>— Voidlight Core Philosophy</strong>
+            </div>
+            <div class="quote es-only">
+                "El universo está roto. De las piezas, construimos cualquier cosa."
+                <br><strong>— Filosofía Core de Voidlight</strong>
+            </div>
+        </div>
+
+        <footer style="text-align: center; padding: 30px 0; color: #666; border-top: 2px solid rgba(0, 212, 255, 0.3); margin-top: 30px;">
+            <p><strong>VOIDLIGHT: Chronicles of the Stellar Veil</strong></p>
+            <p class="en-only">Keeper's Screen - Version 1.0</p>
+            <p class="es-only">Pantalla del Keeper - Versión 1.0</p>
+            <p style="font-size: 0.9em; margin-top: 10px;" class="en-only">For use with Voidlight V0j + Domains V09.1</p>
+            <p style="font-size: 0.9em; margin-top: 10px;" class="es-only">Para uso con Voidlight V0j + Domains V09.1</p>
+        </footer>
+    </div>
+
+    <script>
+        function setLanguage(lang) {
+            document.body.setAttribute('data-lang', lang);
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+            localStorage.setItem('voidlight-lang', lang);
+        }
+
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('voidlight-lang') || 'en';
+            setLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>
